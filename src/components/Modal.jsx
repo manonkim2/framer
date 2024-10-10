@@ -8,6 +8,7 @@ export default function Modal({ title, children, onClose }) {
       <motion.dialog
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 100, y: 0 }}
+        exit={{ opacity: 0, y: 80 }}
         transition={{ duration: 2 }}
         open
         className="modal"
