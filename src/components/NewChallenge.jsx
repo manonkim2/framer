@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react";
-import { motion, stagger, useAnimate } from "framer-motion";
+import { AnimatePresence, motion, stagger, useAnimate } from "framer-motion";
 import { ChallengesContext } from "../store/challenges-context.jsx";
 import Modal from "./Modal.jsx";
 import images from "../assets/images.js";
@@ -66,22 +66,24 @@ export default function NewChallenge({ onDone }) {
           id="new-challenge-images"
           variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
         >
-          {images.map((image) => (
-            <motion.li
-              variants={{
-                hidden: { opacity: 0, scale: 0.5 },
-                visible: { opacity: 1, scale: [0.8, 2, 1] },
-              }}
-              // 부모 컴포넌트에서 사용되는 initial, exit 중 하나라도 적용하고 싶지않다면 따로 설정해줘야함 -> variants naming 사용할 . 수없음
-              exit={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", duration: 3 }}
-              key={image.alt}
-              onClick={() => handleSelectImage(image)}
-              className={selectedImage === image ? "selected" : undefined}
-            >
-              <img {...image} />
-            </motion.li>
-          ))}
+          <AnimatePresence>
+            {images.map((image) => (
+              <motion.li
+                variants={{
+                  hidden: { opacity: 0, scale: 0.5 },
+                  visible: { opacity: 1, scale: [0.8, 2, 1] },
+                }}
+                // 부모 컴포넌트에서 사용되는 initial, exit 중 하나라도 적용하고 싶지않다면 따로 설정해줘야함 -> variants naming 사용할 . 수없음
+                exit={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", duration: 0.3 }}
+                key={image.alt}
+                onClick={() => handleSelectImage(image)}
+                className={selectedImage === image ? "selected" : undefined}
+              >
+                <img {...image} />
+              </motion.li>
+            ))}
+          </AnimatePresence>
         </motion.ul>
 
         <p className="new-challenge-actions">
