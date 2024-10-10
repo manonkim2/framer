@@ -1,10 +1,11 @@
 import { useContext, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, stagger, useAnimate } from "framer-motion";
 import { ChallengesContext } from "../store/challenges-context.jsx";
 import Modal from "./Modal.jsx";
 import images from "../assets/images.js";
 
 export default function NewChallenge({ onDone }) {
+  const [scope, animate] = useAnimate();
   const title = useRef();
   const description = useRef();
   const deadline = useRef();
@@ -31,6 +32,11 @@ export default function NewChallenge({ onDone }) {
       !challenge.deadline.trim() ||
       !challenge.image
     ) {
+      animate(
+        "input, textarea",
+        { x: [-10, 0, 10, 0] },
+        { type: "spring", duration: 1, delay: stagger(0.5) }
+      );
       return;
     }
 
@@ -40,7 +46,7 @@ export default function NewChallenge({ onDone }) {
 
   return (
     <Modal title="New Challenge" onClose={onDone}>
-      <form id="new-challenge" onSubmit={handleSubmit}>
+      <form id="new-challenge" onSubmit={handleSubmit} ref={scope}>
         <p>
           <label htmlFor="title">Title</label>
           <input ref={title} type="text" name="title" id="title" />
@@ -64,7 +70,7 @@ export default function NewChallenge({ onDone }) {
             <motion.li
               variants={{
                 hidden: { opacity: 0, scale: 0.5 },
-                visible: { opacity: 1, scale: 1 },
+                visible: { opacity: 1, scale: [0.8, 2, 1] },
               }}
               // 부모 컴포넌트에서 사용되는 initial, exit 중 하나라도 적용하고 싶지않다면 따로 설정해줘야함 -> variants naming 사용할 . 수없음
               exit={{ opacity: 1, scale: 1 }}
