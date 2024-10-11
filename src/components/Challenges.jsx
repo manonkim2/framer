@@ -43,7 +43,13 @@ export default function Challenges() {
       >
         <AnimatePresence mode="wait">
           {displayedChallenges.length > 0 && (
-            <motion.ol className="challenge-items" key="list">
+            <motion.ol
+              className="challenge-items"
+              key="list"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ y: -20, opacity: 0 }}
+            >
               <AnimatePresence>
                 {displayedChallenges.map((challenge) => (
                   <ChallengeItem
@@ -58,7 +64,14 @@ export default function Challenges() {
           )}
 
           {displayedChallenges.length === 0 && (
-            <p key={"fallback"}>No challenges found.</p>
+            <motion.p
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ y: -20, opacity: 0 }}
+              key={"fallback"}
+            >
+              No challenges found...
+            </motion.p>
           )}
         </AnimatePresence>
       </ChallengeTabs>
